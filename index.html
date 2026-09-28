@@ -2,437 +2,386 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>المختبر الافتراضي للفيزياء - 4AM</title>
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
-    body { font-family: 'Tajawal', sans-serif; }
+    * { font-family: 'Tajawal', sans-serif; touch-action: manipulation; }
     canvas { touch-action: none; }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
 
-  <!-- Header -->
-  <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+  <!-- Header / Navbar -->
+  <header class="bg-slate-800 border-b border-slate-700 shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <div class="bg-blue-600 p-2 rounded-lg text-white">
-          <i class="fa-solid fa-flask-vial text-xl"></i>
-        </div>
+        <div class="bg-blue-600 p-2 rounded-lg text-white font-bold text-xl">🧪</div>
         <div>
-          <h1 class="text-xl font-bold text-white">المختبر الافتراضي للفيزياء</h1>
-          <p class="text-xs text-blue-400">برنامج السنة الرابعة متوسط (4AM)</p>
+          <h1 class="text-lg md:text-xl font-bold text-blue-400">المختبر الافتراضي للفيزياء</h1>
+          <p class="text-xs text-slate-400">برنامج السنة الرابعة متوسط (4AM)</p>
         </div>
       </div>
-      <button id="fullscreenBtn" onclick="toggleFullscreen()" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-2 rounded-lg text-sm flex items-center gap-2 transition">
-        <i class="fa-solid fa-expand"></i>
-        <span class="hidden sm:inline">ملء الشاشة</span>
-      </button>
+      <div class="bg-slate-700 px-3 py-1.5 rounded-full text-xs font-semibold text-slate-300 border border-slate-600">
+        بطلب من: <span class="text-blue-300 font-bold">Prof Garadi</span> | إعداد: <span class="text-emerald-400 font-bold">منصور محمد ياسين</span>
+      </div>
     </div>
   </header>
 
   <!-- Navigation Tabs -->
-  <div class="bg-slate-800/50 border-b border-slate-700">
-    <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto gap-2 py-2">
-      <button onclick="switchTab('electrification')" id="tab-electrification" class="tab-btn active px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 whitespace-nowrap bg-blue-600 text-white">
-        <i class="fa-solid fa-bolt"></i> الظواهر الكهربائية (التكهرب)
+  <div class="bg-slate-800/80 border-b border-slate-700 backdrop-blur-sm sticky top-[61px] z-40">
+    <div class="max-w-7xl mx-auto px-4 flex gap-2 overflow-x-auto py-2 scrollbar-none">
+      <button id="tab-electrification" onclick="switchTab('electrification')" class="px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-blue-600 text-white transition-all shadow-sm">
+        ⚡ الظواهر الكهربائية (التكهرب)
       </button>
-      <button onclick="switchTab('ohm')" id="tab-ohm" class="tab-btn px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600">
-        <i class="fa-solid fa-calculator"></i> قانون أوم (Ohm's Law)
+      <button id="tab-ohm" onclick="switchTab('ohm')" class="px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">
+        📐 قانون أوم
       </button>
-      <button onclick="switchTab('safety')" id="tab-safety" class="tab-btn px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600">
-        <i class="fa-solid fa-[#eab308] fa-shield-halved"></i> الأمن الكهربائي
+      <button id="tab-safety" onclick="switchTab('safety')" class="px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">
+        🛡️ الأمن الكهربائي
       </button>
     </div>
   </div>
 
-  <!-- Main Content Area -->
-  <main class="flex-1 max-w-7xl w-full mx-auto p-4 flex flex-col gap-6">
+  <!-- Main Content Container -->
+  <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
 
-    <!-- Section 1: Electrification -->
-    <section id="sec-electrification" class="sim-section grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-xl p-4 flex flex-col">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="font-bold text-lg text-blue-400"><i class="fa-solid fa-atom ml-2"></i>محاكي طرق التكهرب والكشاف الكهربائي</h2>
-          <div class="flex gap-2">
-            <button onclick="resetElectrification()" class="bg-slate-700 hover:bg-slate-600 text-xs px-3 py-1.5 rounded flex items-center gap-1">
-              <i class="fa-solid fa-rotate-right"></i> إعادة ضبط
+    <!-- Section 1: Electrification Simulation -->
+    <section id="sec-electrification" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Control Panel -->
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-5">
+        <h2 class="text-lg font-bold text-blue-400 flex items-center gap-2 border-b border-slate-700 pb-2">
+          ⚙️ لوحة التحكم والتجارب
+        </h2>
+        
+        <div>
+          <label class="block text-sm font-semibold mb-2 text-slate-300">اختر القضيب:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btn-ebonite" onclick="setRod('ebonite')" class="py-2.5 px-3 rounded-lg border border-blue-500 bg-blue-600/30 text-blue-300 font-bold text-sm transition">
+              إيبونيت (شحنة -)
+            </button>
+            <button id="btn-glass" onclick="setRod('glass')" class="py-2.5 px-3 rounded-lg border border-slate-600 bg-slate-700 text-slate-300 font-bold text-sm hover:border-slate-500 transition">
+              زجاج (شحنة +)
             </button>
           </div>
         </div>
-        <div class="relative flex-1 bg-slate-900 rounded-lg overflow-hidden border border-slate-700 min-h-[350px]">
-          <canvas id="elecCanvas" class="w-full h-full block"></canvas>
-        </div>
-      </div>
-
-      <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 flex flex-col gap-4">
-        <h3 class="font-bold text-md text-white border-b border-slate-700 pb-2">لوحة التحكم والتجارب</h3>
-        
-        <div>
-          <label class="block text-sm font-medium mb-2 text-slate-300">اختر القضيب:</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button onclick="setRodType('ebonite')" id="rod-ebonite" class="p-2 text-sm rounded-lg border border-blue-500 bg-blue-500/20 text-blue-300 font-semibold">إيبونيت (شحنة -)</button>
-            <button onclick="setRodType('glass')" id="rod-glass" class="p-2 text-sm rounded-lg border border-slate-600 bg-slate-700 text-slate-300">زجاج (شحنة +)</button>
-          </div>
-        </div>
 
         <div>
-          <label class="block text-sm font-medium mb-2 text-slate-300">طريقة التكهرب:</label>
-          <select id="elecMode" onchange="changeElecMode(this.value)" class="w-full bg-slate-900 border border-slate-700 text-slate-200 text-sm rounded-lg p-2.5">
+          <label class="block text-sm font-semibold mb-2 text-slate-300">طريقة التكهرب:</label>
+          <select id="select-method" onchange="setMethod(this.value)" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none">
             <option value="rubbing">1. التكهرب بالدلك (Rubbing)</option>
             <option value="contact">2. التكهرب باللمس (Contact)</option>
             <option value="induction">3. التكهرب بالإصلاء/التأثير (Induction)</option>
           </select>
         </div>
 
-        <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-700 text-xs leading-relaxed text-slate-300 space-y-2">
-          <p class="font-bold text-blue-400" id="elec-info-title">التكهرب بالدلك:</p>
-          <p id="elec-info-desc">عند دلك القضيب بقطعة الصوف، ينتقل عدد من الإلكترونات ليصبح مشحوناً كهربائياً.</p>
+        <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-700/50 text-xs text-slate-300 space-y-2">
+          <p id="info-title" class="font-bold text-blue-400 text-sm">التكهرب بالدلك:</p>
+          <p id="info-desc">عند دلك القضيب بقطعة الصوف، ينقل عدد من الإلكترونات ليصبح مشحوناً كهربائياً.</p>
         </div>
+
+        <button onclick="resetElectrification()" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-lg text-sm border border-slate-600 transition flex items-center justify-center gap-2">
+          🔄 إعادة ضبط
+        </button>
+      </div>
+
+      <!-- Canvas Area -->
+      <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex flex-col items-center justify-center relative min-h-[380px]">
+        <div class="absolute top-4 right-4 bg-slate-900/80 px-3 py-1 rounded-md text-xs border border-slate-700 text-slate-400">
+          محاكي طرق التكهرب والكشاف الكهربائي
+        </div>
+        <canvas id="canvas-electro" class="w-full h-[360px] bg-slate-950 rounded-lg border border-slate-800 cursor-pointer"></canvas>
+        <p class="text-xs text-slate-400 mt-2 text-center">💡 استخدم الفأرة أو الإصبع لسحب القضيب وتقريبه من قرص الكشاف الكهربائي.</p>
       </div>
     </section>
 
     <!-- Section 2: Ohm's Law -->
-    <section id="sec-ohm" class="sim-section hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-xl p-4 flex flex-col">
-        <h2 class="font-bold text-lg text-blue-400 mb-4"><i class="fa-solid fa-microchip ml-2"></i>الدارة الكهربائية التفاعلية (قانون أوم)</h2>
-        <div class="relative h-[280px] bg-slate-900 rounded-lg overflow-hidden border border-slate-700 mb-4">
-          <canvas id="ohmCanvas" class="w-full h-full block"></canvas>
+    <section id="sec-ohm" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-5">
+        <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">⚙️ إعدادات الدارة الكهربائية</h2>
+        <div>
+          <label class="block text-sm font-semibold mb-1 text-slate-300">التوتر الكهربائي U (فولت): <span id="val-u" class="text-blue-400 font-bold">6.0 V</span></label>
+          <input type="range" id="input-u" min="0" max="12" step="0.5" value="6" oninput="updateOhm()" class="w-full accent-blue-500">
         </div>
-        <div class="bg-slate-900 border border-slate-700 p-4 rounded-lg flex-1">
-          <h3 class="text-sm font-bold text-slate-300 mb-2">منحنى التوتر بدلالة شدة التيار U = f(I)</h3>
-          <div class="h-[150px]">
-            <canvas id="ohmChart"></canvas>
-          </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1 text-slate-300">المقاومة الكهربائية R (أوم): <span id="val-r" class="text-emerald-400 font-bold">10 Ω</span></label>
+          <input type="range" id="input-r" min="1" max="100" step="1" value="10" oninput="updateOhm()" class="w-full accent-emerald-500">
+        </div>
+        <div class="bg-slate-900 p-4 rounded-lg border border-slate-700 text-center space-y-1">
+          <p class="text-xs text-slate-400">شدة التيار المحسوبة (I = U / R):</p>
+          <p id="val-i" class="text-2xl font-extrabold text-amber-400">0.60 A</p>
         </div>
       </div>
 
-      <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 flex flex-col gap-5">
-        <h3 class="font-bold text-md text-white border-b border-slate-700 pb-2">المتغيرات والحسابات</h3>
-
-        <div>
-          <div class="flex justify-between text-sm mb-1">
-            <span>التوتر الكهربائي (U):</span>
-            <span id="val-u" class="font-bold text-amber-400">6 V</span>
-          </div>
-          <input type="range" id="slider-u" min="0" max="12" step="0.5" value="6" oninput="updateOhm()" class="w-full accent-amber-500">
-        </div>
-
-        <div>
-          <div class="flex justify-between text-sm mb-1">
-            <span>المقاومة الكهربائية (R):</span>
-            <span id="val-r" class="font-bold text-emerald-400">100 Ω</span>
-          </div>
-          <input type="range" id="slider-r" min="10" max="500" step="10" value="100" oninput="updateOhm()" class="w-full accent-emerald-500">
-        </div>
-
-        <div class="bg-slate-900 p-4 rounded-lg border border-slate-700 space-y-3">
-          <div class="text-xs text-slate-400">النتيجة المحسوبة بقانون أوم ($I = \frac{U}{R}$):</div>
-          <div class="text-xl font-extrabold text-blue-400 text-center" id="val-i">0.060 A (60 mA)</div>
-        </div>
+      <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex flex-col items-center justify-center min-h-[380px]">
+        <canvas id="canvas-ohm" class="w-full h-[360px] bg-slate-950 rounded-lg border border-slate-800"></canvas>
       </div>
     </section>
 
     <!-- Section 3: Electrical Safety -->
-    <section id="sec-safety" class="sim-section hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-xl p-4 flex flex-col">
-        <h2 class="font-bold text-lg text-yellow-400 mb-4"><i class="fa-solid fa-shield-cat ml-2"></i>محاكاة الأمن الكهربائي والأخطار</h2>
-        <div class="relative flex-1 bg-slate-900 rounded-lg overflow-hidden border border-slate-700 min-h-[350px]">
-          <canvas id="safetyCanvas" class="w-full h-full block"></canvas>
+    <section id="sec-safety" class="hidden bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg space-y-6">
+      <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-3">🛡️ قواعد الأمن الكهربائي للمأخذ الأرضي والمنصهرة</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+          <h3 class="text-amber-400 font-bold text-md">1. حماية الأشخاص (المأخذ الأرضي)</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            يُوصل المأخذ الأرضي بتيار التسرب الناتـج عن ملامسة الطور لهيكل الأجهزة إلى الأرض، مما يمنع حدوث الصدمات الكهربائية للأفراد.
+          </p>
+          <button onclick="toggleGrounding()" id="btn-ground" class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow hover:bg-emerald-500 transition">
+            حالة الأرضي: مفعل ✅
+          </button>
+        </div>
+        <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
+          <h3 class="text-amber-400 font-bold text-md">2. حماية الأجهزة (المنصهرة)</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            توضع المنصهرة دائماً على سلك الطور (Phase)، وتنصهر سلكها الدقيق لقطع الدارة عند ارتقاع شدة التيار بشكل مفاجئ لحماية الجهاز.
+          </p>
+          <button onclick="toggleFuse()" id="btn-fuse" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-500 transition">
+            حالة المنصهرة: سليمة 🔌
+          </button>
         </div>
       </div>
-
-      <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 flex flex-col gap-4">
-        <h3 class="font-bold text-md text-white border-b border-slate-700 pb-2">عناصر الحماية والأعطال</h3>
-
-        <div class="space-y-3">
-          <label class="flex items-center gap-3 bg-slate-900 p-3 rounded-lg border border-slate-700 cursor-pointer">
-            <input type="checkbox" id="chk-ground" onchange="updateSafety()" class="w-4 h-4 accent-emerald-500">
-            <span class="text-sm">توصيل المأخذ الأرضي (Earth Wire)</span>
-          </label>
-
-          <label class="flex items-center gap-3 bg-slate-900 p-3 rounded-lg border border-slate-700 cursor-pointer">
-            <input type="checkbox" id="chk-fuse" onchange="updateSafety()" class="w-4 h-4 accent-blue-500" checked>
-            <span class="text-sm">تركيب المنصهرة (Fuse) في خط الفاز</span>
-          </label>
-
-          <label class="flex items-center gap-3 bg-slate-900 p-3 rounded-lg border border-slate-700 cursor-pointer">
-            <input type="checkbox" id="chk-leak" onchange="updateSafety()" class="w-4 h-4 accent-red-500">
-            <span class="text-sm text-red-400 font-bold">حدوث تسرب كهربائي (ملامسة الفاز للهيكل)</span>
-          </label>
-        </div>
-
-        <div id="safety-status" class="p-3 rounded-lg text-xs leading-relaxed bg-emerald-500/10 border border-emerald-500 text-emerald-300">
-          وضع آمن: لا يوجد تسرب كهربائي. الجهاز يعمل بشكل طبيعي.
-        </div>
+      <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 flex items-center justify-center min-h-[200px]">
+        <canvas id="canvas-safety" class="w-full h-[220px]"></canvas>
       </div>
     </section>
 
   </main>
 
+  <!-- Footer -->
+  <footer class="bg-slate-800 border-t border-slate-700 py-3 px-4 text-center text-xs text-slate-400">
+    <p>المختبر الافتراضي - العلوم الفيزيائية 4AM | جميع الحقوق محفوظة © 2026</p>
+  </footer>
+
   <script>
-    // Tab Switching Logic
-    function switchTab(tabId) {
-      document.querySelectorAll('.sim-section').forEach(el => el.classList.add('hidden'));
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-blue-600', 'text-white');
-        btn.classList.add('bg-slate-700', 'text-slate-300');
+    // Tab Switching
+    function switchTab(tab) {
+      ['electrification', 'ohm', 'safety'].forEach(t => {
+        document.getElementById(`sec-${t}`).classList.add('hidden');
+        document.getElementById(`tab-${t}`).className = 'px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all';
       });
-
-      document.getElementById('sec-' + tabId).classList.remove('hidden');
-      const activeBtn = document.getElementById('tab-' + tabId);
-      activeBtn.classList.remove('bg-slate-700', 'text-slate-300');
-      activeBtn.classList.add('bg-blue-600', 'text-white');
-
-      if(tabId === 'electrification') initElectrification();
-      if(tabId === 'ohm') initOhm();
-      if(tabId === 'safety') initSafety();
+      document.getElementById(`sec-${tab}`).classList.remove('hidden');
+      document.getElementById(`tab-${tab}`).className = 'px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-blue-600 text-white transition-all shadow-sm';
+      if(tab === 'electrification') resizeCanvasElectro();
+      if(tab === 'ohm') drawOhm();
+      if(tab === 'safety') drawSafety();
     }
 
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
-      }
-    }
-
-    // --- 1. Electrification Simulation Code ---
-    let elecCanvas, elecCtx;
+    // Canvas Electrification Setup
+    const canvasE = document.getElementById('canvas-electro');
+    const ctxE = canvasE.getContext('2d');
     let rodType = 'ebonite';
-    let elecMode = 'rubbing';
+    let method = 'rubbing';
+    let rodX = 80, rodY = 80;
+    let isDragging = false;
+    let leavesAngle = 0;
 
-    function setRodType(type) {
+    function resizeCanvasElectro() {
+      canvasE.width = canvasE.clientWidth;
+      canvasE.height = canvasE.clientHeight;
+      drawElectro();
+    }
+    window.addEventListener('resize', resizeCanvasElectro);
+
+    function setRod(type) {
       rodType = type;
-      document.getElementById('rod-ebonite').className = type === 'ebonite' ? 
-        'p-2 text-sm rounded-lg border border-blue-500 bg-blue-500/20 text-blue-300 font-semibold' : 'p-2 text-sm rounded-lg border border-slate-600 bg-slate-700 text-slate-300';
-      document.getElementById('rod-glass').className = type === 'glass' ? 
-        'p-2 text-sm rounded-lg border border-blue-500 bg-blue-500/20 text-blue-300 font-semibold' : 'p-2 text-sm rounded-lg border border-slate-600 bg-slate-700 text-slate-300';
-      drawElectrification();
+      document.getElementById('btn-ebonite').className = type === 'ebonite' ? 'py-2.5 px-3 rounded-lg border border-blue-500 bg-blue-600/30 text-blue-300 font-bold text-sm transition' : 'py-2.5 px-3 rounded-lg border border-slate-600 bg-slate-700 text-slate-300 font-bold text-sm transition';
+      document.getElementById('btn-glass').className = type === 'glass' ? 'py-2.5 px-3 rounded-lg border border-blue-500 bg-blue-600/30 text-blue-300 font-bold text-sm transition' : 'py-2.5 px-3 rounded-lg border border-slate-600 bg-slate-700 text-slate-300 font-bold text-sm transition';
+      drawElectro();
     }
 
-    function changeElecMode(mode) {
-      elecMode = mode;
-      const t = document.getElementById('elec-info-title');
-      const d = document.getElementById('elec-info-desc');
-      if(mode === 'rubbing') {
+    function setMethod(m) {
+      method = m;
+      const t = document.getElementById('info-title');
+      const d = document.getElementById('info-desc');
+      if(m === 'rubbing') {
         t.innerText = "التكهرب بالدلك:";
-        d.innerText = "عند دلك القضيب بقطعة قماش، تنتقل الشحنات الكهربائية بينهما ليرتفع أو يقل عدد الإلكترونات.";
-      } else if(mode === 'contact') {
+        d.innerText = "عند دلك القضيب بقطعة الصوف، ينقل عدد من الإلكترونات ليصبح مشحوناً كهربائياً.";
+      } else if(m === 'contact') {
         t.innerText = "التكهرب باللمس:";
-        d.innerText = "عند ملامسة قضيب مشحون لكرية ألومنيوم أو قرص الكشاف، تنتقل الشحنات مباشرة وتتنافر الكرية أو الورقتان.";
+        d.innerText = "عند ملامسة القضيب المشحون لقرص الكشاف، تنتقل الشحنات مباشرة لورقتي الكشاف فبتنافران.";
       } else {
         t.innerText = "التكهرب بالإصلاء (التأثير):";
-        d.innerText = "عند تقريب القضيب المشحون دون لمس، إعادة توزيع الشحنات تحدث تلقائياً مما يسبب انفراج ورقتي الكشاف.";
+        d.innerText = "عند تقريب القضيب دون لمس، إعادة توزيع الشحنات تجعل الورقتين تتنافران مؤقتاً.";
       }
-      drawElectrification();
+      resetElectrification();
     }
 
     function resetElectrification() {
-      drawElectrification();
+      rodX = 80; rodY = 80;
+      leavesAngle = 0;
+      drawElectro();
     }
 
-    function initElectrification() {
-      elecCanvas = document.getElementById('elecCanvas');
-      elecCtx = elecCanvas.getContext('2d');
-      elecCanvas.width = elecCanvas.parentElement.clientWidth;
-      elecCanvas.height = elecCanvas.parentElement.clientHeight;
-      drawElectrification();
+    // Touch and Mouse Handling
+    function handlePointerDown(e) { isDragging = true; }
+    function handlePointerMove(e) {
+      if(!isDragging) return;
+      const rect = canvasE.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      rodX = clientX - rect.left - 50;
+      rodY = clientY - rect.top - 15;
+      drawElectro();
     }
+    function handlePointerUp() { isDragging = false; }
 
-    function drawElectrification() {
-      if(!elecCtx) return;
-      const w = elecCanvas.width;
-      const h = elecCanvas.height;
-      elecCtx.clearRect(0, 0, w, h);
+    canvasE.addEventListener('mousedown', handlePointerDown);
+    canvasE.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('mouseup', handlePointerUp);
+    canvasE.addEventListener('touchstart', handlePointerDown, {passive: true});
+    canvasE.addEventListener('touchmove', handlePointerMove, {passive: true});
+    window.addEventListener('touchend', handlePointerUp);
 
-      // Background Grid
-      elecCtx.strokeStyle = '#334155';
-      elecCtx.lineWidth = 1;
-      for(let x=0; x<w; x+=40) { elecCtx.beginPath(); elecCtx.moveTo(x,0); elecCtx.lineTo(x,h); elecCtx.stroke(); }
-      for(let y=0; y<h; y+=40) { elecCtx.beginPath(); elecCtx.moveTo(0,y); elecCtx.lineTo(w,y); elecCtx.stroke(); }
+    function drawElectro() {
+      if(!canvasE.width) return;
+      ctxE.clearRect(0, 0, canvasE.width, canvasE.height);
 
-      // Electroscope Stand
-      elecCtx.fillStyle = '#64748b';
-      elecCtx.fillRect(w/2 - 40, h - 30, 80, 15); // Base
-      elecCtx.fillRect(w/2 - 4, h - 180, 8, 150); // Stem
+      // Electroscope position
+      const cx = canvasE.width * 0.65;
+      const cy = canvasE.height * 0.35;
 
-      // Metal Sphere Knob
-      elecCtx.beginPath();
-      elecCtx.arc(w/2, h - 195, 20, 0, Math.PI * 2);
-      elecCtx.fillStyle = '#94a3b8';
-      elecCtx.fill();
-      elecCtx.stroke();
+      // Distance check
+      const dist = Math.hypot((rodX + 100) - cx, (rodY + 15) - cy);
+      if(method === 'contact' && dist < 45) {
+        leavesAngle = Math.min(leavesAngle + 0.1, 0.6);
+      } else if(method === 'induction' && dist < 90) {
+        leavesAngle = Math.min(leavesAngle + 0.08, 0.5);
+      } else if(method !== 'contact') {
+        leavesAngle = Math.max(leavesAngle - 0.05, 0);
+      }
 
-      // Gold/Aluminum Leaves
-      const angle = (elecMode === 'rubbing') ? 0.1 : 0.6;
-      
-      elecCtx.save();
-      elecCtx.translate(w/2, h - 50);
-      
+      // Draw Electroscope
+      // Disk
+      ctxE.beginPath();
+      ctxE.arc(cx, cy, 22, 0, Math.PI * 2);
+      ctxE.fillStyle = '#94a3b8';
+      ctxE.fill();
+      ctxE.lineWidth = 3;
+      ctxE.strokeStyle = '#cbd5e1';
+      ctxE.stroke();
+
+      // Rod
+      ctxE.beginPath();
+      ctxE.moveTo(cx, cy);
+      ctxE.lineTo(cx, cy + 120);
+      ctxE.lineWidth = 6;
+      ctxE.strokeStyle = '#64748b';
+      ctxE.stroke();
+
+      // Container Glass
+      ctxE.beginPath();
+      ctxE.arc(cx, cy + 120, 50, 0, Math.PI * 2);
+      ctxE.strokeStyle = '#334155';
+      ctxE.lineWidth = 2;
+      ctxE.stroke();
+
+      // Leaves (Gold/Aluminum)
+      ctxE.save();
+      ctxE.translate(cx, cy + 120);
       // Left leaf
-      elecCtx.save();
-      elecCtx.rotate(-angle);
-      elecCtx.fillStyle = '#f59e0b';
-      elecCtx.fillRect(-3, 0, 6, 60);
-      elecCtx.restore();
-
+      ctxE.save();
+      ctxE.rotate(-leavesAngle);
+      ctxE.beginPath();
+      ctxE.moveTo(0, 0);
+      ctxE.lineTo(-8, 40);
+      ctxE.lineWidth = 4;
+      ctxE.strokeStyle = '#f59e0b';
+      ctxE.stroke();
+      ctxE.restore();
       // Right leaf
-      elecCtx.save();
-      elecCtx.rotate(angle);
-      elecCtx.fillStyle = '#f59e0b';
-      elecCtx.fillRect(-3, 0, 6, 60);
-      elecCtx.restore();
+      ctxE.save();
+      ctxE.rotate(leavesAngle);
+      ctxE.beginPath();
+      ctxE.moveTo(0, 0);
+      ctxE.lineTo(8, 40);
+      ctxE.lineWidth = 4;
+      ctxE.strokeStyle = '#f59e0b';
+      ctxE.stroke();
+      ctxE.restore();
+      ctxE.restore();
 
-      elecCtx.restore();
+      // Draw Rod
+      ctxE.fillStyle = rodType === 'ebonite' ? '#1e293b' : '#38bdf8';
+      ctxE.strokeStyle = rodType === 'ebonite' ? '#475569' : '#0284c7';
+      ctxE.lineWidth = 2;
+      ctxE.beginPath();
+      ctxE.roundRect(rodX, rodY, 120, 25, 6);
+      ctxE.fill();
+      ctxE.stroke();
 
-      // Charged Rod
-      elecCtx.fillStyle = rodType === 'ebonite' ? '#1e293b' : '#38bdf8';
-      elecCtx.fillRect(w/2 - 140, h - 215, 110, 20);
-      elecCtx.strokeStyle = '#ffffff';
-      elecCtx.strokeRect(w/2 - 140, h - 215, 110, 20);
-
-      // Charge Indicators (-) or (+)
-      elecCtx.fillStyle = rodType === 'ebonite' ? '#ef4444' : '#3b82f6';
-      elecCtx.font = 'bold 16px sans-serif';
+      // Charges on Rod
+      ctxE.fillStyle = rodType === 'ebonite' ? '#ef4444' : '#22c55e';
+      ctxE.font = 'bold 14px sans-serif';
       const sign = rodType === 'ebonite' ? '-' : '+';
-      for(let i=0; i<4; i++) {
-        elecCtx.fillText(sign, w/2 - 130 + (i*25), h - 200);
+      for(let i = 10; i < 110; i += 20) {
+        ctxE.fillText(sign, rodX + i, rodY + 17);
       }
     }
 
-    // --- 2. Ohm's Law Code ---
-    let ohmChart;
-    function initOhm() {
-      const ohmCanvas = document.getElementById('ohmCanvas');
-      const ctx = ohmCanvas.getContext('2d');
-      ohmCanvas.width = ohmCanvas.parentElement.clientWidth;
-      ohmCanvas.height = ohmCanvas.parentElement.clientHeight;
+    // Ohm's Law Simulation
+    function updateOhm() {
+      const u = parseFloat(document.getElementById('input-u').value);
+      const r = parseFloat(document.getElementById('input-r').value);
+      const i = (u / r).toFixed(2);
+      document.getElementById('val-u').innerText = `${u.toFixed(1)} V`;
+      document.getElementById('val-r').innerText = `${r} Ω`;
+      document.getElementById('val-i').innerText = `${i} A`;
+      drawOhm();
+    }
 
-      // Draw Circuit
-      ctx.clearRect(0,0,ohmCanvas.width, ohmCanvas.height);
+    function drawOhm() {
+      const c = document.getElementById('canvas-ohm');
+      c.width = c.clientWidth;
+      c.height = c.clientHeight;
+      const ctx = c.getContext('2d');
+      ctx.clearRect(0,0,c.width,c.height);
+
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = 4;
-      ctx.strokeRect(60, 40, ohmCanvas.width - 120, ohmCanvas.height - 80);
+      ctx.strokeRect(60, 50, c.width - 120, c.height - 100);
 
-      // Battery
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(40, ohmCanvas.height/2 - 30, 40, 60);
-      ctx.fillStyle = '#eab308';
-      ctx.font = 'bold 14px sans-serif';
-      ctx.fillText("G (مولد)", 35, ohmCanvas.height/2 + 50);
-
-      // Resistor
-      const rx = ohmCanvas.width / 2 - 30;
-      const ry = 25;
-      ctx.fillStyle = '#475569';
-      ctx.fillRect(rx, ry, 60, 30);
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(rx, ry, 60, 30);
-      ctx.fillStyle = '#ffffff';
-      ctx.fillText("R (مقاومة)", rx, ry - 8);
-
-      // Chart Init
-      if(!ohmChart) {
-        const cCtx = document.getElementById('ohmChart').getContext('2d');
-        ohmChart = new Chart(cCtx, {
-          type: 'line',
-          data: {
-            labels: [0, 0.02, 0.04, 0.06, 0.08, 0.1],
-            datasets: [{
-              label: 'U (Volt)',
-              data: [0, 2, 4, 6, 8, 10],
-              borderColor: '#38bdf8',
-              backgroundColor: 'rgba(56, 189, 248, 0.1)',
-              fill: true
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: { title: { display: true, text: 'I (Ampere)', color: '#94a3b8' } },
-              y: { title: { display: true, text: 'U (Volt)', color: '#94a3b8' } }
-            }
-          }
-        });
-      }
-      updateOhm();
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 16px Tajawal';
+      ctx.fillText('مولد (Generator)', c.width/2 - 45, 40);
+      ctx.fillText('مقاومة (R)', c.width/2 - 30, c.height - 30);
     }
 
-    function updateOhm() {
-      const u = parseFloat(document.getElementById('slider-u').value);
-      const r = parseFloat(document.getElementById('slider-r').value);
-      const i = u / r;
+    // Electrical Safety
+    let isGrounded = true;
+    let isFuseIntact = true;
 
-      document.getElementById('val-u').innerText = u + ' V';
-      document.getElementById('val-r').innerText = r + ' Ω';
-      document.getElementById('val-i').innerText = i.toFixed(3) + ' A (' + (i*1000).toFixed(0) + ' mA)';
+    function toggleGrounding() {
+      isGrounded = !isGrounded;
+      document.getElementById('btn-ground').innerText = isGrounded ? 'حالة الأرضي: مفعل ✅' : 'حالة الأرضي: غير مفعل ❌';
+      document.getElementById('btn-ground').className = isGrounded ? 'px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow' : 'px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-bold shadow';
+      drawSafety();
     }
 
-    // --- 3. Electrical Safety Code ---
-    function initSafety() {
-      const safetyCanvas = document.getElementById('safetyCanvas');
-      const ctx = safetyCanvas.getContext('2d');
-      safetyCanvas.width = safetyCanvas.parentElement.clientWidth;
-      safetyCanvas.height = safetyCanvas.parentElement.clientHeight;
-      updateSafety();
+    function toggleFuse() {
+      isFuseIntact = !isFuseIntact;
+      document.getElementById('btn-fuse').innerText = isFuseIntact ? 'حالة المنصهرة: سليمة 🔌' : 'حالة المنصهرة: محترقة/منقطعة 💥';
+      document.getElementById('btn-fuse').className = isFuseIntact ? 'px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow' : 'px-4 py-2 bg-slate-600 text-white rounded-lg text-xs font-bold shadow';
+      drawSafety();
     }
 
-    function updateSafety() {
-      const canvas = document.getElementById('safetyCanvas');
-      if(!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width;
-      const h = canvas.height;
+    function drawSafety() {
+      const c = document.getElementById('canvas-safety');
+      c.width = c.clientWidth;
+      c.height = c.clientHeight;
+      const ctx = c.getContext('2d');
+      ctx.clearRect(0,0,c.width,c.height);
 
-      const hasGround = document.getElementById('chk-ground').checked;
-      const hasFuse = document.getElementById('chk-fuse').checked;
-      const hasLeak = document.getElementById('chk-leak').checked;
-
-      ctx.clearRect(0,0,w,h);
-
-      // Washing Machine Body
-      ctx.fillStyle = '#334155';
-      ctx.fillRect(w/2 - 80, h/2 - 80, 160, 160);
-      ctx.strokeStyle = '#94a3b8';
-      ctx.lineWidth = 3;
-      ctx.strokeRect(w/2 - 80, h/2 - 80, 160, 160);
-
-      // Glass Window
-      ctx.beginPath();
-      ctx.arc(w/2, h/2, 45, 0, Math.PI * 2);
-      ctx.fillStyle = '#0f172a';
-      ctx.fill();
-      ctx.stroke();
-
-      // Status Box Info
-      const statusBox = document.getElementById('safety-status');
-      if(hasLeak && !hasGround) {
-        statusBox.className = "p-3 rounded-lg text-xs leading-relaxed bg-red-500/20 border border-red-500 text-red-300";
-        statusBox.innerText = "⚠️ خطر! هناك تسرب كهربائي والغسالة غير موصولة بالأرضي. تعرض المستخدم لصدمة كهربائية!";
-      } else if(hasLeak && hasGround) {
-        statusBox.className = "p-3 rounded-lg text-xs leading-relaxed bg-yellow-500/20 border border-yellow-500 text-yellow-300";
-        statusBox.innerText = "🛡️ تم الحماية: التسرب الكهربائي يتجه عبر السلك الأرضي إلى الأرض بأمان دون إيذاء المستخدم.";
-      } else {
-        statusBox.className = "p-3 rounded-lg text-xs leading-relaxed bg-emerald-500/20 border border-emerald-500 text-emerald-300";
-        statusBox.innerText = "✅ الوضع آمن: الدارة تعمل بشكل ممتاز ولا يوجد أي خطر تسرب.";
-      }
+      ctx.font = 'bold 14px Tajawal';
+      ctx.fillStyle = '#e2e8f0';
+      ctx.fillText(`حالة الدارة: ${isFuseIntact ? 'كهرباء موصولة' : 'الدارة مفتوحة (تيار مقطوع)'}`, 20, 30);
+      ctx.fillText(`مستوى الأمان للأفراد: ${isGrounded ? 'آمن جداً (مأخذ أرضي مفعّل)' : 'خطر صدمة كهربائية!'}`, 20, 60);
     }
 
-    // Auto initialize on page load
+    // Initial Load
     window.onload = () => {
-      initElectrification();
-    };
-    window.onresize = () => {
-      initElectrification();
+      switchTab('electrification');
     };
   </script>
 </body>
