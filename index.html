@@ -13,11 +13,11 @@
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
 
-  <!-- Header / Navbar -->
+  <!-- Header -->
   <header class="bg-slate-800 border-b border-slate-700 shadow-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
       <div class="flex items-center gap-3">
-        <div class="bg-blue-600 p-2 rounded-lg text-white font-bold text-xl">🧪</div>
+        <div class="bg-blue-600 p-2 rounded-lg text-white font-bold text-xl">⚛️</div>
         <div>
           <h1 class="text-lg md:text-xl font-bold text-blue-400">المختبر الافتراضي للفيزياء</h1>
           <p class="text-xs text-slate-400">برنامج السنة الرابعة متوسط (4AM)</p>
@@ -32,8 +32,14 @@
   <!-- Navigation Tabs -->
   <div class="bg-slate-800/80 border-b border-slate-700 backdrop-blur-sm sticky top-[61px] z-40">
     <div class="max-w-7xl mx-auto px-4 flex gap-2 overflow-x-auto py-2 scrollbar-none">
-      <button id="tab-electrification" onclick="switchTab('electrification')" class="px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-blue-600 text-white transition-all shadow-sm">
-        ⚡ الظواهر الكهربائية (التكهرب)
+      <button id="tab-atom" onclick="switchTab('atom')" class="px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-blue-600 text-white transition-all shadow-sm">
+        ⚛️ النموذج الكوكبي للذرة
+      </button>
+      <button id="tab-attraction" onclick="switchTab('attraction')" class="px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">
+        🧲 التجاذب والتنافر
+      </button>
+      <button id="tab-electrification" onclick="switchTab('electrification')" class="px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">
+        ⚡ طرق التكهرب والكشاف
       </button>
       <button id="tab-ohm" onclick="switchTab('ohm')" class="px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all">
         📐 قانون أوم
@@ -44,106 +50,120 @@
     </div>
   </div>
 
-  <!-- Main Content Container -->
+  <!-- Main Content -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
 
-    <!-- Section 1: Electrification Simulation -->
-    <section id="sec-electrification" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Control Panel -->
-      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-5">
-        <h2 class="text-lg font-bold text-blue-400 flex items-center gap-2 border-b border-slate-700 pb-2">
-          ⚙️ لوحة التحكم والتجارب
-        </h2>
-        
-        <div>
-          <label class="block text-sm font-semibold mb-2 text-slate-300">اختر القضيب:</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button id="btn-ebonite" onclick="setRod('ebonite')" class="py-2.5 px-3 rounded-lg border border-blue-500 bg-blue-600/30 text-blue-300 font-bold text-sm transition">
-              إيبونيت (شحنة -)
-            </button>
-            <button id="btn-glass" onclick="setRod('glass')" class="py-2.5 px-3 rounded-lg border border-slate-600 bg-slate-700 text-slate-300 font-bold text-sm hover:border-slate-500 transition">
-              زجاج (شحنة +)
-            </button>
-          </div>
+    <!-- Section: Planetary Atom Model -->
+    <section id="sec-atom" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-4">
+        <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">🪐 النموذج الكوكبي للذرة (رذرفورد)</h2>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          تتكون الذرة من **نواة مركزية** ثقيلة موجبة الشحنة ($+$)، تدور حولها **إلكترونات** سالبة الشحنة ($-$) في مدارات دائرية شبيهة بدوران الكواكب حول الشمس.
+        </p>
+        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700/60 text-xs space-y-2">
+          <p><span class="text-red-400 font-bold">• النواة:</span> تحتوي على شحنات موجبة (بروتونات) وتتمركز في الوسط.</p>
+          <p><span class="text-blue-400 font-bold">• الإلكترونات:</span> دقائق مجهرية سالبة تدور بسرعة عالية حول النواة.</p>
+          <p><span class="text-emerald-400 font-bold">• التعادل الكهربائي:</span> الذرة متعادلة كهربائياً لأن عدد الشحنات الموجبة يساوي عدد الشحنات السالمة.</p>
         </div>
-
-        <div>
-          <label class="block text-sm font-semibold mb-2 text-slate-300">طريقة التكهرب:</label>
-          <select id="select-method" onchange="setMethod(this.value)" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 text-sm font-medium focus:ring-2 focus:ring-blue-500 outline-none">
-            <option value="rubbing">1. التكهرب بالدلك (Rubbing)</option>
-            <option value="contact">2. التكهرب باللمس (Contact)</option>
-            <option value="induction">3. التكهرب بالإصلاء/التأثير (Induction)</option>
-          </select>
-        </div>
-
-        <div class="bg-slate-900/60 p-4 rounded-lg border border-slate-700/50 text-xs text-slate-300 space-y-2">
-          <p id="info-title" class="font-bold text-blue-400 text-sm">التكهرب بالدلك:</p>
-          <p id="info-desc">عند دلك القضيب بقطعة الصوف، ينقل عدد من الإلكترونات ليصبح مشحوناً كهربائياً.</p>
-        </div>
-
-        <button onclick="resetElectrification()" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-lg text-sm border border-slate-600 transition flex items-center justify-center gap-2">
-          🔄 إعادة ضبط
-        </button>
       </div>
-
-      <!-- Canvas Area -->
-      <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex flex-col items-center justify-center relative min-h-[380px]">
-        <div class="absolute top-4 right-4 bg-slate-900/80 px-3 py-1 rounded-md text-xs border border-slate-700 text-slate-400">
-          محاكي طرق التكهرب والكشاف الكهربائي
-        </div>
-        <canvas id="canvas-electro" class="w-full h-[360px] bg-slate-950 rounded-lg border border-slate-800 cursor-pointer"></canvas>
-        <p class="text-xs text-slate-400 mt-2 text-center">💡 استخدم الفأرة أو الإصبع لسحب القضيب وتقريبه من قرص الكشاف الكهربائي.</p>
+      <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex flex-col items-center justify-center min-h-[380px]">
+        <canvas id="canvas-atom" class="w-full h-[360px] bg-slate-950 rounded-lg border border-slate-800"></canvas>
       </div>
     </section>
 
-    <!-- Section 2: Ohm's Law -->
-    <section id="sec-ohm" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-5">
-        <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">⚙️ إعدادات الدارة الكهربائية</h2>
+    <!-- Section: Attraction and Repulsion -->
+    <section id="sec-attraction" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-4">
+        <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">🧲 محاكاة التجاذب والتنافر</h2>
+        
         <div>
-          <label class="block text-sm font-semibold mb-1 text-slate-300">التوتر الكهربائي U (فولت): <span id="val-u" class="text-blue-400 font-bold">6.0 V</span></label>
-          <input type="range" id="input-u" min="0" max="12" step="0.5" value="6" oninput="updateOhm()" class="w-full accent-blue-500">
+          <label class="block text-sm font-semibold mb-2 text-slate-300">الجسم الأول (المُعلق):</label>
+          <select id="body1" onchange="updateAttraction()" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 text-sm outline-none">
+            <option value="ebonite">إيبونيت مشحون (-)</option>
+            <option value="glass">زجاج مشحون (+)</option>
+          </select>
         </div>
+
         <div>
-          <label class="block text-sm font-semibold mb-1 text-slate-300">المقاومة الكهربائية R (أوم): <span id="val-r" class="text-emerald-400 font-bold">10 Ω</span></label>
-          <input type="range" id="input-r" min="1" max="100" step="1" value="10" oninput="updateOhm()" class="w-full accent-emerald-500">
+          <label class="block text-sm font-semibold mb-2 text-slate-300">الجسم الثاني (المُقرب):</label>
+          <select id="body2" onchange="updateAttraction()" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 text-sm outline-none">
+            <option value="ebonite">إيبونيت مشحون (-)</option>
+            <option value="glass">زجاج مشحون (+)</option>
+          </select>
         </div>
-        <div class="bg-slate-900 p-4 rounded-lg border border-slate-700 text-center space-y-1">
-          <p class="text-xs text-slate-400">شدة التيار المحسوبة (I = U / R):</p>
-          <p id="val-i" class="text-2xl font-extrabold text-amber-400">0.60 A</p>
+
+        <div id="attraction-result" class="bg-slate-900 p-4 rounded-lg border border-slate-700 text-center text-sm font-bold">
+          --
         </div>
       </div>
 
+      <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex flex-col items-center justify-center min-h-[380px]">
+        <canvas id="canvas-attraction" class="w-full h-[360px] bg-slate-950 rounded-lg border border-slate-800"></canvas>
+      </div>
+    </section>
+
+    <!-- Section: Electrification (Original) -->
+    <section id="sec-electrification" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-5">
+        <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">⚙️ طرق التكهرب الكشاف</h2>
+        <div>
+          <label class="block text-sm font-semibold mb-2 text-slate-300">اختر القضيب:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btn-ebonite" onclick="setRod('ebonite')" class="py-2.5 px-3 rounded-lg border border-blue-500 bg-blue-600/30 text-blue-300 font-bold text-sm">إيبونيت (-)</button>
+            <button id="btn-glass" onclick="setRod('glass')" class="py-2.5 px-3 rounded-lg border border-slate-600 bg-slate-700 text-slate-300 font-bold text-sm">زجاج (+)</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-2 text-slate-300">طريقة التكهرب:</label>
+          <select id="select-method" onchange="setMethod(this.value)" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 text-sm outline-none">
+            <option value="rubbing">1. التكهرب بالدلك</option>
+            <option value="contact">2. التكهرب باللمس</option>
+            <option value="induction">3. التكهرب بالإصلاء (التأثير)</option>
+          </select>
+        </div>
+        <button onclick="resetElectrification()" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-lg text-sm border border-slate-600">🔄 إعادة ضبط</button>
+      </div>
+      <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex flex-col items-center justify-center min-h-[380px]">
+        <canvas id="canvas-electro" class="w-full h-[360px] bg-slate-950 rounded-lg border border-slate-800 cursor-pointer"></canvas>
+      </div>
+    </section>
+
+    <!-- Section: Ohm -->
+    <section id="sec-ohm" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-5">
+        <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">⚙️ إعدادات الدارة</h2>
+        <div>
+          <label class="block text-sm font-semibold mb-1 text-slate-300">التوتر U: <span id="val-u" class="text-blue-400 font-bold">6.0 V</span></label>
+          <input type="range" id="input-u" min="0" max="12" step="0.5" value="6" oninput="updateOhm()" class="w-full accent-blue-500">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-1 text-slate-300">المقاومة R: <span id="val-r" class="text-emerald-400 font-bold">10 Ω</span></label>
+          <input type="range" id="input-r" min="1" max="100" step="1" value="10" oninput="updateOhm()" class="w-full accent-emerald-500">
+        </div>
+        <div class="bg-slate-900 p-4 rounded-lg border border-slate-700 text-center">
+          <p class="text-xs text-slate-400">شدة التيار I:</p>
+          <p id="val-i" class="text-2xl font-extrabold text-amber-400">0.60 A</p>
+        </div>
+      </div>
       <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex flex-col items-center justify-center min-h-[380px]">
         <canvas id="canvas-ohm" class="w-full h-[360px] bg-slate-950 rounded-lg border border-slate-800"></canvas>
       </div>
     </section>
 
-    <!-- Section 3: Electrical Safety -->
+    <!-- Section: Safety -->
     <section id="sec-safety" class="hidden bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-lg space-y-6">
-      <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-3">🛡️ قواعد الأمن الكهربائي للمأخذ الأرضي والمنصهرة</h2>
+      <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-3">🛡️ قواعد الأمن الكهربائي</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
-          <h3 class="text-amber-400 font-bold text-md">1. حماية الأشخاص (المأخذ الأرضي)</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            يُوصل المأخذ الأرضي بتيار التسرب الناتـج عن ملامسة الطور لهيكل الأجهزة إلى الأرض، مما يمنع حدوث الصدمات الكهربائية للأفراد.
-          </p>
-          <button onclick="toggleGrounding()" id="btn-ground" class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow hover:bg-emerald-500 transition">
-            حالة الأرضي: مفعل ✅
-          </button>
+          <h3 class="text-amber-400 font-bold text-md">1. المأخذ الأرضي</h3>
+          <p class="text-xs text-slate-300">يحمي الإنسان من الصدمة الكهربائية بتسريب التيار للأرض.</p>
+          <button onclick="toggleGrounding()" id="btn-ground" class="px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow">حالة الأرضي: مفعل ✅</button>
         </div>
         <div class="bg-slate-900 p-5 rounded-xl border border-slate-700 space-y-3">
-          <h3 class="text-amber-400 font-bold text-md">2. حماية الأجهزة (المنصهرة)</h3>
-          <p class="text-xs text-slate-300 leading-relaxed">
-            توضع المنصهرة دائماً على سلك الطور (Phase)، وتنصهر سلكها الدقيق لقطع الدارة عند ارتقاع شدة التيار بشكل مفاجئ لحماية الجهاز.
-          </p>
-          <button onclick="toggleFuse()" id="btn-fuse" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow hover:bg-blue-500 transition">
-            حالة المنصهرة: سليمة 🔌
-          </button>
+          <h3 class="text-amber-400 font-bold text-md">2. المنصهرة</h3>
+          <p class="text-xs text-slate-300">توضع على سلك الطور لحماية الأجهزة من الارتفاع المفاجئ للتيار.</p>
+          <button onclick="toggleFuse()" id="btn-fuse" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow">حالة المنصهرة: سليمة 🔌</button>
         </div>
-      </div>
-      <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 flex items-center justify-center min-h-[200px]">
-        <canvas id="canvas-safety" class="w-full h-[220px]"></canvas>
       </div>
     </section>
 
@@ -155,234 +175,167 @@
   </footer>
 
   <script>
-    // Tab Switching
     function switchTab(tab) {
-      ['electrification', 'ohm', 'safety'].forEach(t => {
+      ['atom', 'attraction', 'electrification', 'ohm', 'safety'].forEach(t => {
         document.getElementById(`sec-${t}`).classList.add('hidden');
         document.getElementById(`tab-${t}`).className = 'px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-slate-700 text-slate-300 hover:bg-slate-600 transition-all';
       });
       document.getElementById(`sec-${tab}`).classList.remove('hidden');
       document.getElementById(`tab-${tab}`).className = 'px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap bg-blue-600 text-white transition-all shadow-sm';
+      if(tab === 'atom') drawAtom();
+      if(tab === 'attraction') updateAttraction();
       if(tab === 'electrification') resizeCanvasElectro();
       if(tab === 'ohm') drawOhm();
-      if(tab === 'safety') drawSafety();
     }
 
-    // Canvas Electrification Setup
+    // 1. Atom Animation
+    let atomAngle = 0;
+    function drawAtom() {
+      const c = document.getElementById('canvas-atom');
+      c.width = c.clientWidth; c.height = c.clientHeight;
+      const ctx = c.getContext('2d');
+
+      function animate() {
+        if(document.getElementById('sec-atom').classList.contains('hidden')) return;
+        ctx.clearRect(0,0,c.width,c.height);
+        const cx = c.width/2, cy = c.height/2;
+
+        // Nucleus
+        ctx.beginPath();
+        ctx.arc(cx, cy, 25, 0, Math.PI*2);
+        ctx.fillStyle = '#ef4444';
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 16px sans-serif';
+        ctx.fillText('+ + +', cx-18, cy+5);
+
+        // Orbits
+        [60, 100, 140].forEach((r, idx) => {
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI*2);
+          ctx.strokeStyle = '#334155';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Electrons
+          const speed = (idx + 1) * 0.02;
+          const ex = cx + r * Math.cos(atomAngle * (idx+1));
+          const ey = cy + r * Math.sin(atomAngle * (idx+1));
+          ctx.beginPath();
+          ctx.arc(ex, ey, 8, 0, Math.PI*2);
+          ctx.fillStyle = '#38bdf8';
+          ctx.fill();
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 12px sans-serif';
+          ctx.fillText('-', ex-3, ey+4);
+        });
+
+        atomAngle += 0.02;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // 2. Attraction and Repulsion
+    function updateAttraction() {
+      const b1 = document.getElementById('body1').value;
+      const b2 = document.getElementById('body2').value;
+      const res = document.getElementById('attraction-result');
+      const c = document.getElementById('canvas-attraction');
+      c.width = c.clientWidth; c.height = c.clientHeight;
+      const ctx = c.getContext('2d');
+      ctx.clearRect(0,0,c.width,c.height);
+
+      const isSame = (b1 === b2);
+      if(isSame) {
+        res.className = 'bg-red-900/50 p-4 rounded-lg border border-red-700 text-center text-sm font-bold text-red-300';
+        res.innerText = '⚡ يحدث تنافر (لأن الشحنتين متماثلتان)';
+      } else {
+        res.className = 'bg-emerald-900/50 p-4 rounded-lg border border-emerald-700 text-center text-sm font-bold text-emerald-300';
+        res.innerText = '🧲 يحدث تجاذب (لأن الشحنتين مختلفان)';
+      }
+
+      // Draw Bodies
+      const offset = isSame ? 40 : -20;
+      // Body 1 (Suspended)
+      ctx.fillStyle = b1 === 'ebonite' ? '#1e293b' : '#38bdf8';
+      ctx.fillRect(c.width/2 - 100 - offset, c.height/2 - 15, 100, 30);
+      ctx.fillStyle = '#ffffff'; ctx.fillText(b1 === 'ebonite' ? '-' : '+', c.width/2 - 50 - offset, c.height/2 + 5);
+
+      // Body 2 (Approaching)
+      ctx.fillStyle = b2 === 'ebonite' ? '#1e293b' : '#38bdf8';
+      ctx.fillRect(c.width/2 + 20 + offset, c.height/2 - 15, 100, 30);
+      ctx.fillStyle = '#ffffff'; ctx.fillText(b2 === 'ebonite' ? '-' : '+', c.width/2 + 70 + offset, c.height/2 + 5);
+    }
+
+    // Electrification
     const canvasE = document.getElementById('canvas-electro');
     const ctxE = canvasE.getContext('2d');
-    let rodType = 'ebonite';
-    let method = 'rubbing';
-    let rodX = 80, rodY = 80;
-    let isDragging = false;
-    let leavesAngle = 0;
+    let rodType = 'ebonite', method = 'rubbing', rodX = 80, rodY = 80, isDragging = false, leavesAngle = 0;
 
     function resizeCanvasElectro() {
-      canvasE.width = canvasE.clientWidth;
-      canvasE.height = canvasE.clientHeight;
-      drawElectro();
-    }
-    window.addEventListener('resize', resizeCanvasElectro);
-
-    function setRod(type) {
-      rodType = type;
-      document.getElementById('btn-ebonite').className = type === 'ebonite' ? 'py-2.5 px-3 rounded-lg border border-blue-500 bg-blue-600/30 text-blue-300 font-bold text-sm transition' : 'py-2.5 px-3 rounded-lg border border-slate-600 bg-slate-700 text-slate-300 font-bold text-sm transition';
-      document.getElementById('btn-glass').className = type === 'glass' ? 'py-2.5 px-3 rounded-lg border border-blue-500 bg-blue-600/30 text-blue-300 font-bold text-sm transition' : 'py-2.5 px-3 rounded-lg border border-slate-600 bg-slate-700 text-slate-300 font-bold text-sm transition';
+      canvasE.width = canvasE.clientWidth; canvasE.height = canvasE.clientHeight;
       drawElectro();
     }
 
-    function setMethod(m) {
-      method = m;
-      const t = document.getElementById('info-title');
-      const d = document.getElementById('info-desc');
-      if(m === 'rubbing') {
-        t.innerText = "التكهرب بالدلك:";
-        d.innerText = "عند دلك القضيب بقطعة الصوف، ينقل عدد من الإلكترونات ليصبح مشحوناً كهربائياً.";
-      } else if(m === 'contact') {
-        t.innerText = "التكهرب باللمس:";
-        d.innerText = "عند ملامسة القضيب المشحون لقرص الكشاف، تنتقل الشحنات مباشرة لورقتي الكشاف فبتنافران.";
-      } else {
-        t.innerText = "التكهرب بالإصلاء (التأثير):";
-        d.innerText = "عند تقريب القضيب دون لمس، إعادة توزيع الشحنات تجعل الورقتين تتنافران مؤقتاً.";
-      }
-      resetElectrification();
-    }
-
-    function resetElectrification() {
-      rodX = 80; rodY = 80;
-      leavesAngle = 0;
-      drawElectro();
-    }
-
-    // Touch and Mouse Handling
-    function handlePointerDown(e) { isDragging = true; }
-    function handlePointerMove(e) {
-      if(!isDragging) return;
-      const rect = canvasE.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      rodX = clientX - rect.left - 50;
-      rodY = clientY - rect.top - 15;
-      drawElectro();
-    }
-    function handlePointerUp() { isDragging = false; }
-
-    canvasE.addEventListener('mousedown', handlePointerDown);
-    canvasE.addEventListener('mousemove', handlePointerMove);
-    window.addEventListener('mouseup', handlePointerUp);
-    canvasE.addEventListener('touchstart', handlePointerDown, {passive: true});
-    canvasE.addEventListener('touchmove', handlePointerMove, {passive: true});
-    window.addEventListener('touchend', handlePointerUp);
+    function setRod(t) { rodType = t; drawElectro(); }
+    function setMethod(m) { method = m; resetElectrification(); }
+    function resetElectrification() { rodX = 80; rodY = 80; leavesAngle = 0; drawElectro(); }
 
     function drawElectro() {
       if(!canvasE.width) return;
       ctxE.clearRect(0, 0, canvasE.width, canvasE.height);
-
-      // Electroscope position
-      const cx = canvasE.width * 0.65;
-      const cy = canvasE.height * 0.35;
-
-      // Distance check
+      const cx = canvasE.width * 0.65, cy = canvasE.height * 0.35;
       const dist = Math.hypot((rodX + 100) - cx, (rodY + 15) - cy);
-      if(method === 'contact' && dist < 45) {
-        leavesAngle = Math.min(leavesAngle + 0.1, 0.6);
-      } else if(method === 'induction' && dist < 90) {
-        leavesAngle = Math.min(leavesAngle + 0.08, 0.5);
-      } else if(method !== 'contact') {
-        leavesAngle = Math.max(leavesAngle - 0.05, 0);
-      }
 
-      // Draw Electroscope
-      // Disk
-      ctxE.beginPath();
-      ctxE.arc(cx, cy, 22, 0, Math.PI * 2);
-      ctxE.fillStyle = '#94a3b8';
-      ctxE.fill();
-      ctxE.lineWidth = 3;
-      ctxE.strokeStyle = '#cbd5e1';
-      ctxE.stroke();
+      if(method === 'contact' && dist < 45) leavesAngle = Math.min(leavesAngle + 0.1, 0.6);
+      else if(method === 'induction' && dist < 90) leavesAngle = Math.min(leavesAngle + 0.08, 0.5);
+      else if(method !== 'contact') leavesAngle = Math.max(leavesAngle - 0.05, 0);
+
+      // Disk & Rod
+      ctxE.beginPath(); ctxE.arc(cx, cy, 22, 0, Math.PI * 2); ctxE.fillStyle = '#94a3b8'; ctxE.fill();
+      ctxE.beginPath(); ctxE.moveTo(cx, cy); ctxE.lineTo(cx, cy + 120); ctxE.lineWidth = 6; ctxE.strokeStyle = '#64748b'; ctxE.stroke();
+
+      // Leaves
+      ctxE.save(); ctxE.translate(cx, cy + 120);
+      ctxE.rotate(-leavesAngle); ctxE.beginPath(); ctxE.moveTo(0, 0); ctxE.lineTo(-8, 40); ctxE.lineWidth = 4; ctxE.strokeStyle = '#f59e0b'; ctxE.stroke();
+      ctxE.rotate(leavesAngle * 2); ctxE.beginPath(); ctxE.moveTo(0, 0); ctxE.lineTo(8, 40); ctxE.lineWidth = 4; ctxE.strokeStyle = '#f59e0b'; ctxE.stroke();
+      ctxE.restore();
 
       // Rod
-      ctxE.beginPath();
-      ctxE.moveTo(cx, cy);
-      ctxE.lineTo(cx, cy + 120);
-      ctxE.lineWidth = 6;
-      ctxE.strokeStyle = '#64748b';
-      ctxE.stroke();
-
-      // Container Glass
-      ctxE.beginPath();
-      ctxE.arc(cx, cy + 120, 50, 0, Math.PI * 2);
-      ctxE.strokeStyle = '#334155';
-      ctxE.lineWidth = 2;
-      ctxE.stroke();
-
-      // Leaves (Gold/Aluminum)
-      ctxE.save();
-      ctxE.translate(cx, cy + 120);
-      // Left leaf
-      ctxE.save();
-      ctxE.rotate(-leavesAngle);
-      ctxE.beginPath();
-      ctxE.moveTo(0, 0);
-      ctxE.lineTo(-8, 40);
-      ctxE.lineWidth = 4;
-      ctxE.strokeStyle = '#f59e0b';
-      ctxE.stroke();
-      ctxE.restore();
-      // Right leaf
-      ctxE.save();
-      ctxE.rotate(leavesAngle);
-      ctxE.beginPath();
-      ctxE.moveTo(0, 0);
-      ctxE.lineTo(8, 40);
-      ctxE.lineWidth = 4;
-      ctxE.strokeStyle = '#f59e0b';
-      ctxE.stroke();
-      ctxE.restore();
-      ctxE.restore();
-
-      // Draw Rod
       ctxE.fillStyle = rodType === 'ebonite' ? '#1e293b' : '#38bdf8';
-      ctxE.strokeStyle = rodType === 'ebonite' ? '#475569' : '#0284c7';
-      ctxE.lineWidth = 2;
-      ctxE.beginPath();
-      ctxE.roundRect(rodX, rodY, 120, 25, 6);
-      ctxE.fill();
-      ctxE.stroke();
-
-      // Charges on Rod
-      ctxE.fillStyle = rodType === 'ebonite' ? '#ef4444' : '#22c55e';
-      ctxE.font = 'bold 14px sans-serif';
-      const sign = rodType === 'ebonite' ? '-' : '+';
-      for(let i = 10; i < 110; i += 20) {
-        ctxE.fillText(sign, rodX + i, rodY + 17);
-      }
+      ctxE.fillRect(rodX, rodY, 120, 25);
     }
 
-    // Ohm's Law Simulation
+    // Touch handlers
+    canvasE.addEventListener('mousedown', () => isDragging = true);
+    canvasE.addEventListener('mousemove', (e) => {
+      if(!isDragging) return;
+      const rect = canvasE.getBoundingClientRect();
+      rodX = e.clientX - rect.left - 50; rodY = e.clientY - rect.top - 15;
+      drawElectro();
+    });
+    window.addEventListener('mouseup', () => isDragging = false);
+
+    // Ohm
     function updateOhm() {
       const u = parseFloat(document.getElementById('input-u').value);
       const r = parseFloat(document.getElementById('input-r').value);
-      const i = (u / r).toFixed(2);
       document.getElementById('val-u').innerText = `${u.toFixed(1)} V`;
       document.getElementById('val-r').innerText = `${r} Ω`;
-      document.getElementById('val-i').innerText = `${i} A`;
+      document.getElementById('val-i').innerText = `${(u/r).toFixed(2)} A`;
       drawOhm();
     }
-
     function drawOhm() {
       const c = document.getElementById('canvas-ohm');
-      c.width = c.clientWidth;
-      c.height = c.clientHeight;
+      c.width = c.clientWidth; c.height = c.clientHeight;
       const ctx = c.getContext('2d');
       ctx.clearRect(0,0,c.width,c.height);
-
-      ctx.strokeStyle = '#38bdf8';
-      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#38bdf8'; ctx.lineWidth = 4;
       ctx.strokeRect(60, 50, c.width - 120, c.height - 100);
-
-      ctx.fillStyle = '#f59e0b';
-      ctx.font = 'bold 16px Tajawal';
-      ctx.fillText('مولد (Generator)', c.width/2 - 45, 40);
-      ctx.fillText('مقاومة (R)', c.width/2 - 30, c.height - 30);
     }
 
-    // Electrical Safety
-    let isGrounded = true;
-    let isFuseIntact = true;
-
-    function toggleGrounding() {
-      isGrounded = !isGrounded;
-      document.getElementById('btn-ground').innerText = isGrounded ? 'حالة الأرضي: مفعل ✅' : 'حالة الأرضي: غير مفعل ❌';
-      document.getElementById('btn-ground').className = isGrounded ? 'px-4 py-2 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow' : 'px-4 py-2 bg-red-600 text-white rounded-lg text-xs font-bold shadow';
-      drawSafety();
-    }
-
-    function toggleFuse() {
-      isFuseIntact = !isFuseIntact;
-      document.getElementById('btn-fuse').innerText = isFuseIntact ? 'حالة المنصهرة: سليمة 🔌' : 'حالة المنصهرة: محترقة/منقطعة 💥';
-      document.getElementById('btn-fuse').className = isFuseIntact ? 'px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-bold shadow' : 'px-4 py-2 bg-slate-600 text-white rounded-lg text-xs font-bold shadow';
-      drawSafety();
-    }
-
-    function drawSafety() {
-      const c = document.getElementById('canvas-safety');
-      c.width = c.clientWidth;
-      c.height = c.clientHeight;
-      const ctx = c.getContext('2d');
-      ctx.clearRect(0,0,c.width,c.height);
-
-      ctx.font = 'bold 14px Tajawal';
-      ctx.fillStyle = '#e2e8f0';
-      ctx.fillText(`حالة الدارة: ${isFuseIntact ? 'كهرباء موصولة' : 'الدارة مفتوحة (تيار مقطوع)'}`, 20, 30);
-      ctx.fillText(`مستوى الأمان للأفراد: ${isGrounded ? 'آمن جداً (مأخذ أرضي مفعّل)' : 'خطر صدمة كهربائية!'}`, 20, 60);
-    }
-
-    // Initial Load
-    window.onload = () => {
-      switchTab('electrification');
-    };
+    window.onload = () => switchTab('atom');
   </script>
 </body>
 </html>
