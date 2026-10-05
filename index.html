@@ -47,13 +47,13 @@
   <!-- Main Content -->
   <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
 
-    <!-- Section: Planetary Atom Model -->
+    <!-- Section 1: Atom Model -->
     <section id="sec-atom" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-4">
         <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">🪐 التوزيع الإلكتروني للذرة</h2>
         
         <div>
-          <label class="block text-sm font-semibold mb-2 text-slate-300">اختر الذرة للمعاينة:</label>
+          <label class="block text-sm font-semibold mb-2 text-slate-300">اختر الذرة للرسم والمعاينة:</label>
           <select id="atom-select" onchange="changeAtom(this.value)" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 text-sm outline-none font-bold">
             <option value="H">1. الهيدروجين (H) - Z=1</option>
             <option value="C">2. الكربون (C) - Z=6</option>
@@ -83,7 +83,7 @@
       </div>
     </section>
 
-    <!-- Section: Attraction & Repulsion (Pendulum) -->
+    <!-- Section 2: Attraction & Pendulum -->
     <section id="sec-attraction" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
       <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-4">
         <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">🧲 التجاذب والتنافر مع النواس</h2>
@@ -101,4 +101,37 @@
           <p class="text-slate-300">اضغط وقم بـ **سحب القضيب بالماوس أو الإصبع** وتقريبه من الكرية المتعادلة لملاحظة الانجذاب الشحني والتنافر عند اللمس المباشر.</p>
         </div>
 
-        <button onclick="resetAttraction()" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-lg text-sm border border-slate-6
+        <button onclick="resetAttraction()" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-lg text-sm border border-slate-600">🔄 إعادة النواس للمركز</button>
+      </div>
+
+      <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-lg flex flex-col items-center justify-center min-h-[380px]">
+        <canvas id="canvas-attraction" class="w-full h-[380px] bg-slate-950 rounded-lg border border-slate-800 cursor-grab active:cursor-grabbing"></canvas>
+      </div>
+    </section>
+
+    <!-- Section 3: Electrification -->
+    <section id="sec-electrification" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="bg-slate-800 p-5 rounded-xl border border-slate-700 shadow-lg space-y-5">
+        <h2 class="text-lg font-bold text-blue-400 border-b border-slate-700 pb-2">⚙ الكشاف الكهربائي وطرق التكهرب</h2>
+        <div>
+          <label class="block text-sm font-semibold mb-2 text-slate-300">اختر القضيب:</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button id="btn-ebonite" onclick="setRod('ebonite')" class="py-2.5 px-3 rounded-lg border border-blue-500 bg-blue-600/30 text-blue-300 font-bold text-sm">إيبونيت (-)</button>
+            <button id="btn-glass" onclick="setRod('glass')" class="py-2.5 px-3 rounded-lg border border-slate-600 bg-slate-700 text-slate-300 font-bold text-sm">زجاج (+)</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-semibold mb-2 text-slate-300">طريقة التكهرب:</label>
+          <select id="select-method" onchange="setMethod(this.value)" class="w-full bg-slate-900 border border-slate-700 text-slate-200 rounded-lg p-2.5 text-sm outline-none">
+            <option value="rubbing">1. التكهرب بالدلك</option>
+            <option value="contact">2. التكهرب باللمس</option>
+            <option value="induction">3. التكهرب بالتأثير</option>
+          </select>
+        </div>
+        <div class="bg-slate-900 p-3 rounded-lg border border-slate-700 text-xs text-slate-300">
+          💡 **اسحب القضيب بالماوس أو لمس الشاشة** وقربه من القرص المعدني للكشاف لملاحظة انفراج الورقتين.
+        </div>
+        <button onclick="resetElectrification()" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold rounded-lg text-sm border border-slate-600">🔄 تفريغ الشحنة</button>
+      </div>
+
+      <div class="lg:col-span-2 bg-slate-800 p-4 rounded-xl border border-slate-7
